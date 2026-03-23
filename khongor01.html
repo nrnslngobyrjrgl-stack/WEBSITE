@@ -1,8 +1,94 @@
-<html> 
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <title>Улс орнуудын танилцуулга</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_blank_without_borders.svg/2000px-World_map_blank_without_borders.svg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    h1 {
+      text-align: center;
+      color: #fff;
+      text-shadow: 2px 2px 4px #000;
+    }
+    #searchBox {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    #countryInput {
+      padding: 10px;
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 15px;
+      margin-left: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .card {
+      background: rgba(255,255,255,0.9);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 500px;
+      text-align: center;
+    }
+    .card img {
+      width: 150px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌍 Улс орнуудын танилцуулга</h1>
+  <div id="searchBox">
+    <input type="text" id="countryInput" placeholder="Улсын нэр оруулна уу...">
+    <button onclick="getCountry()">Хайх</button>
+  </div>
+  <div id="result"></div>
 
-
-
-
-
-sfdgsjhgsu;sjkfdj
+  <script>
+    async function getCountry() {
+      const country = document.getElementById("countryInput").value;
+      if (!country) {
+        alert("Улсын нэр оруулна уу!");
+        return;
+      }
+      try {
+        const response = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+        const data = await response.json();
+        const info = data[0];
+        document.getElementById("result").innerHTML = `
+          <div class="card">
+            <h2>${info.name.common}</h2>
+            <img src="${info.flags.png}" alt="Flag">
+            <p><b>Нийслэл:</b> ${info.capital}</p>
+            <p><b>Хүн ам:</b> ${info.population.toLocaleString()}</p>
+            <p><b>Нутаг дэвсгэр:</b> ${info.area.toLocaleString()} км²</p>
+            <p><b>Албан ёсны хэл:</b> ${Object.values(info.languages || {}).join(", ")}</p>
+            <p><b>Валют:</b> ${Object.values(info.currencies || {}).map(c => c.name).join(", ")}</p>
+          </div>
+        `;
+      } catch (error) {
+        document.getElementById("result").innerHTML = "<p>Мэдээлэл олдсонгүй.</p>";
+      }
+    }
+  </script>
+</body>
 </html>
