@@ -3,179 +3,238 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Дэлхийн Улс Орнууд</title>
+  <title>🌍 World Explorer | Premium Edition</title>
 
   <style>
     :root {
-      --bg-color: #f0f2f5;
-      --card-bg: #ffffff;
-      --text-color: #333;
-      --accent-color: #4a90e2;
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --bg-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      --card-bg: rgba(255, 255, 255, 0.15);
+      --card-border: rgba(255, 255, 255, 0.25);
+      --text-color: #ffffff;
+      --accent-color: #00f2fe;
+      --glass-blur: blur(15px);
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .dark {
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
-      --text-color: #e0e0e0;
+      --bg-gradient: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+      --card-bg: rgba(0, 0, 0, 0.4);
+      --card-border: rgba(255, 255, 255, 0.1);
       --accent-color: #bb86fc;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
       margin: 0;
       padding: 20px;
-      background-color: var(--bg-color);
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
       color: var(--text-color);
-      transition: var(--transition);
+      transition: background 0.5s ease;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 🎨 Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+
+    /* 🎈 Floating Bubbles */
+    .bg-bubbles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+    .bg-bubbles li { position: absolute; list-style: none; background: rgba(255,255,255,0.1); bottom: -160px; animation: bubble 25s linear infinite; border-radius: 50%; }
+    .bg-bubbles li:nth-child(1) { left: 10%; width: 80px; height: 80px; }
+    .bg-bubbles li:nth-child(2) { left: 20%; width: 40px; height: 40px; animation-delay: 2s; }
+    .bg-bubbles li:nth-child(3) { left: 70%; width: 120px; height: 120px; animation-delay: 4s; }
+    .bg-bubbles li:nth-child(4) { left: 85%; width: 60px; height: 60px; animation-delay: 1s; }
+    
+    @keyframes bubble {
+      0% { transform: translateY(0) rotate(0); opacity: 0.8; }
+      100% { transform: translateY(-1200px) rotate(720deg); opacity: 0; }
     }
 
     h1 {
       text-align: center;
-      font-weight: 300;
-      letter-spacing: 2px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
-    /* 🌗 Toggle Button */
     .theme-btn {
       display: block;
-      margin: 10px auto;
-      padding: 10px 20px;
-      border-radius: 25px;
-      border: none;
-      background: var(--accent-color);
+      margin: 0 auto 30px;
+      padding: 12px 30px;
+      border-radius: 30px;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      backdrop-filter: var(--glass-blur);
       color: white;
       cursor: pointer;
       font-weight: bold;
       transition: var(--transition);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
 
     .theme-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      transform: translateY(-3px) scale(1.05);
+      background: var(--accent-color);
+      color: #000;
     }
 
-    /* 🔍 Search Box */
     #searchBox {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin: 30px 0;
+      gap: 15px;
+      margin-bottom: 50px;
     }
 
     input {
-      padding: 12px 20px;
-      border-radius: 25px;
-      border: 1px solid #ddd;
-      width: 250px;
+      padding: 15px 25px;
+      border-radius: 30px;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      backdrop-filter: var(--glass-blur);
+      color: white;
+      width: 280px;
       outline: none;
       transition: var(--transition);
     }
 
-    input:focus {
-      border-color: var(--accent-color);
-      box-shadow: 0 0 8px var(--accent-color);
-    }
+    input:focus { width: 350px; box-shadow: 0 0 25px var(--accent-color); }
 
     .search-btn {
-      padding: 10px 20px;
-      border-radius: 25px;
+      padding: 10px 35px;
+      border-radius: 30px;
       border: none;
-      background: var(--text-color);
-      color: var(--bg-color);
+      background: var(--accent-color);
+      color: #000;
+      font-weight: 700;
       cursor: pointer;
+      transition: var(--transition);
     }
 
-    /* 🌍 Country grid */
+    .search-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--accent-color); }
+
+    /* 🌍 Grid & Card */
     .country-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      margin: 20px auto;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .country-btn {
       background: var(--card-bg);
-      border: none;
-      padding: 15px;
-      border-radius: 15px;
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: 25px;
       cursor: pointer;
-      text-align: center;
       transition: var(--transition);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      animation: fadeIn 0.6s ease-out forwards;
-      opacity: 0;
-      color: var(--text-color);
+      color: white;
+      text-align: center;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .country-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
+    .country-btn:hover { transform: translateY(-12px); border-color: var(--accent-color); }
 
     .country-btn img {
       width: 100%;
-      height: 80px;
+      height: 110px;
       object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
     }
 
-    /* 📦 Detail card */
-    .card {
-      margin: 30px auto;
-      padding: 30px;
-      max-width: 450px;
-      background: var(--card-bg);
+    /* 📦 Detail Section */
+    .detail-container {
+      max-width: 600px;
+      margin: 0 auto;
+      animation: cardPop 0.6s ease;
+    }
+
+    .back-btn {
+      padding: 12px 25px;
       border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-      animation: cardPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid var(--card-border);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: var(--transition);
+      font-weight: bold;
     }
 
-    @keyframes cardPop {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
+    .back-btn:hover { background: #fff; color: #000; transform: translateX(-5px); }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--card-border);
+      padding: 40px;
+      border-radius: 35px;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
     }
 
     .card img {
-      width: 200px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      margin: 15px 0;
+      width: 280px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      border: 4px solid rgba(255,255,255,0.2);
     }
 
-    .card h2 { margin-top: 0; color: var(--accent-color); }
-    .card p { margin: 8px 0; font-size: 0.95rem; }
+    .card h2 { font-size: 2.2rem; color: var(--accent-color); margin: 0 0 20px; }
+    .card p { font-size: 1.1rem; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); margin: 0; }
 
-    /* Loading Spinner */
+    .map-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 15px 35px;
+      background: #ff4b2b;
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    .map-link:hover { transform: scale(1.1); box-shadow: 0 0 25px #ff4b2b; }
+
+    @keyframes cardPop {
+      from { opacity: 0; transform: scale(0.8) translateY(30px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
     .loader {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid var(--accent-color);
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      border: 5px solid rgba(255,255,255,0.1);
+      border-top: 5px solid var(--accent-color);
+      border-radius: 50%; width: 50px; height: 50px;
       animation: spin 1s linear infinite;
-      display: none;
-      margin: 20px auto;
+      margin: 40px auto; display: none;
     }
-
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
+    @keyframes spin { 100% { transform: rotate(360deg); } }
   </style>
 </head>
-<body class="light">
+<body>
 
-<h1>🌍 Дэлхийн Улс Орнууд</h1>
+<ul class="bg-bubbles">
+  <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+</ul>
 
-<button class="theme-btn" onclick="toggleMode()">🌗 Өнгө солих</button>
+<h1>🌏 World Explorer</h1>
+
+<button class="theme-btn" onclick="toggleMode()">✨ Өнгө Солих</button>
 
 <div id="searchBox">
   <input type="text" id="searchInput" placeholder="Улсын нэр (English)..." onkeypress="if(event.key==='Enter') searchCountry()">
@@ -189,108 +248,90 @@
 <script>
   const loader = document.getElementById("loader");
 
-  // 🌗 Dark / Light Mode Toggle
   function toggleMode() {
-    const body = document.body;
-    if (body.classList.contains("light")) {
-      body.classList.replace("light", "dark");
-    } else {
-      body.classList.replace("dark", "light");
-    }
+    document.body.classList.toggle("dark");
   }
 
-  // 🔍 Search Country
+  function showLoader(s) {
+    loader.style.display = s ? "block" : "none";
+  }
+
   async function searchCountry() {
     const value = document.getElementById("searchInput").value.trim();
     if (!value) return;
-
     showLoader(true);
     try {
       const res = await fetch(`https://restcountries.com/v3.1/name/${value}`);
       if (!res.ok) throw new Error();
       const data = await res.json();
-      
       renderGrid(data);
-      document.getElementById("result").innerHTML = ""; // Хайлт хийхэд дэлгэрэнгүйг цэвэрлэнэ
+      document.getElementById("result").innerHTML = "";
     } catch {
-      alert("Улс олдсонгүй! Та англиар зөв бичсэн эсэхээ шалгана уу.");
-    } finally {
-      showLoader(false);
-    }
+      alert("Улс олдсонгүй! Та зөв бичсэн эсэхээ шалгаарай.");
+    } finally { showLoader(false); }
   }
 
-  // 🔹 Render Grid Items
   function renderGrid(data) {
     const container = document.getElementById("countryList");
     container.innerHTML = "";
-    
-    data.forEach((c, index) => {
+    container.style.display = "grid";
+    document.getElementById("searchBox").style.display = "flex";
+
+    data.forEach((c, i) => {
       const btn = document.createElement("button");
       btn.className = "country-btn";
-      btn.style.animationDelay = `${index * 0.05}s`; // Улсууд дараалж орж ирэх эффект
-
-      btn.innerHTML = `
-        <img src="${c.flags.png}" alt="flag">
-        <p><b>${c.name.common}</b></p>
-      `;
-
-      btn.onclick = () => {
-        showDetail(c.name.common);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      };
-
+      btn.style.animation = `cardPop 0.5s ease forwards ${i * 0.05}s`;
+      btn.innerHTML = `<img src="${c.flags.png}"><p><b>${c.name.common}</b></p>`;
+      btn.onclick = () => { showDetail(c.name.common); window.scrollTo({top:0, behavior:'smooth'}); };
       container.appendChild(btn);
     });
   }
 
-  // 📦 Show Detail Card
   async function showDetail(name) {
     showLoader(true);
+    document.getElementById("countryList").style.display = "none";
+    document.getElementById("searchBox").style.display = "none";
+
     try {
       const res = await fetch(`https://restcountries.com/v3.1/name/${name}?fullText=true`);
       const data = await res.json();
       const info = data[0];
 
       document.getElementById("result").innerHTML = `
-        <div class="card">
-          <h2>${info.name.common}</h2>
-          <img src="${info.flags.svg || info.flags.png}">
-          <p><b>Нийслэл:</b> ${info.capital ? info.capital[0] : "Байхгүй"}</p>
-          <p><b>Хүн ам:</b> ${info.population.toLocaleString()} хүн</p>
-          <p><b>Нутаг дэвсгэр:</b> ${info.area.toLocaleString()} км²</p>
-          <p><b>Тив:</b> ${info.continents.join(", ")}</p>
-          <p><b>Валют:</b> ${Object.values(info.currencies || {}).map(c => `${c.name} (${c.symbol})`).join(", ")}</p>
-        </div>
-      `;
+        <div class="detail-container">
+          <button class="back-btn" onclick="goBack()">⬅️ Буцах</button>
+          <div class="card">
+            <h2>${info.name.common}</h2>
+            <img src="${info.flags.svg || info.flags.png}">
+            <p>🏙️ <b>Нийслэл:</b> ${info.capital ? info.capital[0] : "Байхгүй"}</p>
+            <p>👥 <b>Хүн ам:</b> ${info.population.toLocaleString()}</p>
+            <p>🗺️ <b>Газар нутаг:</b> ${info.area.toLocaleString()} км²</p>
+            <p>🌍 <b>Тив:</b> ${info.continents[0]}</p>
+            <p>💰 <b>Валют:</b> ${Object.values(info.currencies || {}).map(v => `${v.name} (${v.symbol})`).join(", ")}</p>
+            <a href="${info.maps.googleMaps}" target="_blank" class="map-link">📍 Google Maps дээр харах</a>
+          </div>
+        </div>`;
     } catch {
-      document.getElementById("result").innerHTML = "<p>Мэдээлэл авахад алдаа гарлаа.</p>";
-    } finally {
-      showLoader(false);
-    }
+      alert("Алдаа гарлаа!");
+      goBack();
+    } finally { showLoader(false); }
   }
 
-  // 🔄 Initial Load
-  const defaultCountries = ["Mongolia", "Japan", "USA", "France", "Germany", "Norway", "South Korea", "Italy"];
+  function goBack() {
+    document.getElementById("result").innerHTML = "";
+    document.getElementById("countryList").style.display = "grid";
+    document.getElementById("searchBox").style.display = "flex";
+  }
 
+  // Эхлэлд харагдах улсууд
+  const defaultList = ["Mongolia", "Japan", "Switzerland", "Canada", "Norway", "South Korea", "Italy", "France"];
   async function loadInitial() {
     showLoader(true);
-    const promises = defaultCountries.map(name => 
-      fetch(`https://restcountries.com/v3.1/name/${name}`).then(res => res.json())
-    );
-    
     try {
-      const results = await Promise.all(promises);
-      const combinedData = results.map(data => data[0]);
-      renderGrid(combinedData);
-    } catch (e) {
-      console.error("Ачааллахад алдаа гарлаа");
-    } finally {
-      showLoader(false);
-    }
-  }
-
-  function showLoader(show) {
-    loader.style.display = show ? "block" : "none";
+      const promises = defaultList.map(n => fetch(`https://restcountries.com/v3.1/name/${n}`).then(r => r.json()));
+      const res = await Promise.all(promises);
+      renderGrid(res.map(d => d[0]));
+    } finally { showLoader(false); }
   }
 
   loadInitial();
